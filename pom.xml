@@ -62,6 +62,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.integration</groupId>
+			<artifactId>spring-integration-groovy</artifactId>
+			<version>${org.springframework.integration.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.integration</groupId>
 			<artifactId>spring-integration-http</artifactId>
 			<version>${org.springframework.integration.version}</version>
 		</dependency>
