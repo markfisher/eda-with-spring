@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/integration"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:jms="http://www.springframework.org/schema/integration/jms"
+	xsi:schemaLocation="http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-2.0.xsd
+		http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms-2.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<scheduled-producer fixed-delay="10000" channel="jmsOut"
+			payload-expression="@jmsTemplate.convertAndSend('JMS Message at ' + new java.util.Date())"/>
+
+	<jms:outbound-channel-adapter id="jmsOut" destination-name="queue.example.common"/>
+
+	<beans:bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate"
+		p:connectionFactory-ref="connectionFactory"
+		p:defaultDestinationName="queue.example.common"/>
+
+	<beans:bean id="connectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory"
+		p:sessionCacheSize="10">
+		<beans:property name="targetConnectionFactory">
+			<beans:bean class="org.apache.activemq.ActiveMQConnectionFactory" p:brokerURL="vm://localhost"/>
+		</beans:property>
+	</beans:bean>
+
+</beans:beans>

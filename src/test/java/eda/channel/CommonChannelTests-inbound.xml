@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/integration"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:file="http://www.springframework.org/schema/integration/file"
+	xmlns:jms="http://www.springframework.org/schema/integration/jms"
+	xmlns:mail="http://www.springframework.org/schema/integration/mail"
+	xsi:schemaLocation="http://www.springframework.org/schema/integration/mail http://www.springframework.org/schema/integration/mail/spring-integration-mail-2.0.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-2.0.xsd
+		http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file-2.0.xsd
+		http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms-2.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<jms:message-driven-channel-adapter id="jmsIn" destination-name="queue.example.common" channel="messagesIn"/>
+
+	<file:inbound-channel-adapter id="filesIn" directory="${java.io.tmpdir}/eda-common-channel" channel="filesChannel"/>
+
+	<file:file-to-string-transformer id="filesToString" input-channel="filesChannel" output-channel="messagesIn"/>
+
+	<mail:inbound-channel-adapter id="mailIn" store-uri="pop3://mark:mark@localhost/INBOX"
+		channel="mailChannel" should-delete-messages="true"/>
+
+	<transformer input-channel="mailChannel"
+				 expression="payload.subject + ': ' + payload.content + ' (from ' + payload.from[0] + ')'"
+				 output-channel="messagesIn"/>
+
+	<poller fixed-delay="5000" default="true"/>
+
+</beans:beans>
