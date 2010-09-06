@@ -30,6 +30,7 @@
 		<org.slf4j.version>1.5.10</org.slf4j.version>
 		-->
 		<org.springframework.version>3.0.0.RELEASE</org.springframework.version>
+		<org.springframework.batch.version>2.1.2.RELEASE</org.springframework.batch.version>
 		<org.springframework.integration.version>2.0.0.M7</org.springframework.integration.version>
 	</properties>
 	<dependencies>
@@ -94,6 +95,25 @@
 			<groupId>org.springframework.integration</groupId>
 			<artifactId>spring-integration-xmpp</artifactId>
 			<version>${org.springframework.integration.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.batch</groupId>
+			<artifactId>spring-batch-core</artifactId>
+			<version>${org.springframework.batch.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-aop</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-beans</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!-- test-scoped dependencies -->
 		<dependency>
