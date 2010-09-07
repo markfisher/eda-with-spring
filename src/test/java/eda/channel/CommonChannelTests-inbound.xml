@@ -5,17 +5,35 @@
 	xmlns:file="http://www.springframework.org/schema/integration/file"
 	xmlns:jms="http://www.springframework.org/schema/integration/jms"
 	xmlns:mail="http://www.springframework.org/schema/integration/mail"
-	xsi:schemaLocation="http://www.springframework.org/schema/integration/mail http://www.springframework.org/schema/integration/mail/spring-integration-mail-2.0.xsd
+	xmlns:int-xml="http://www.springframework.org/schema/integration/xml"
+	xsi:schemaLocation="http://www.springframework.org/schema/integration/xml http://www.springframework.org/schema/integration/xml/spring-integration-xml-2.0.xsd
+		http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-3.0.xsd
+		http://www.springframework.org/schema/integration/mail http://www.springframework.org/schema/integration/mail/spring-integration-mail-2.0.xsd
 		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-2.0.xsd
 		http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file-2.0.xsd
 		http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms-2.0.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+	<!-- ########## JMS Messages ########## -->
+
 	<jms:message-driven-channel-adapter id="jmsIn" destination-name="queue.example.common" channel="messagesIn"/>
 
-	<file:inbound-channel-adapter id="filesIn" directory="${java.io.tmpdir}/eda-common-channel" channel="filesChannel"/>
+	<!-- ########## Files ########## -->
 
-	<file:file-to-string-transformer id="filesToString" input-channel="filesChannel" output-channel="messagesIn"/>
+	<file:inbound-channel-adapter id="filesIn" directory="${java.io.tmpdir}/eda-common-channel" channel="fileRoutingChannel"
+		filename-pattern=".*\.(txt|xml)"/>
+
+	<router id="fileRouter" input-channel="fileRoutingChannel"
+			expression="payload.name.endsWith('txt') ? 'textFiles' : 'xmlFiles'"/>
+
+	<file:file-to-string-transformer id="filesToString" input-channel="textFiles" output-channel="messagesIn"/>
+
+	<chain id="xmlFileTransformers" input-channel="xmlFiles" output-channel="messagesIn">
+		<file:file-to-string-transformer/>
+		<int-xml:xpath-transformer xpath-expression="/item/text()"/>
+	</chain>
+
+	<!-- ########## Mail ########## -->
 
 	<mail:inbound-channel-adapter id="mailIn" store-uri="pop3://mark:mark@localhost/INBOX"
 		channel="mailChannel" should-delete-messages="true"/>
@@ -23,6 +41,8 @@
 	<transformer input-channel="mailChannel"
 				 expression="payload.subject + ': ' + payload.content + ' (from ' + payload.from[0] + ')'"
 				 output-channel="messagesIn"/>
+
+	<!-- ########## Common Configuration ########## -->
 
 	<poller fixed-delay="5000" default="true"/>
 

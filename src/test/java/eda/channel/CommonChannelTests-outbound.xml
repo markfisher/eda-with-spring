@@ -8,7 +8,7 @@
 		http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms-2.0.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<scheduled-producer fixed-delay="10000" channel="jmsOut"
+	<scheduled-producer cron="*/7 * * * * ?" channel="jmsOut"
 			payload-expression="@jmsTemplate.convertAndSend('JMS Message at ' + new java.util.Date())"/>
 
 	<jms:outbound-channel-adapter id="jmsOut" destination-name="queue.example.common"/>
