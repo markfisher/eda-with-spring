@@ -1,4 +1,4 @@
-package eda.channel;
+package eda.bus;
 
 import org.springframework.integration.annotation.Header;
 import org.springframework.integration.history.MessageHistory;

@@ -12,16 +12,22 @@
 	<publish-subscribe-channel id="messagesIn"/>
 
 	<service-activator id="exampleService" input-channel="messagesIn">
-		<groovy:script location="eda/channel/ExampleService.groovy" refresh-check-delay="10000"/>
-		<!-- <beans:bean class="eda.channel.ExampleService"/>-->
+		<beans:bean class="eda.bus.ExampleService"/>
 	</service-activator>
 
 	<message-history/>
 
 	<context:property-placeholder/>
 
-	<beans:import resource="CommonChannelTests-inbound.xml"/>
+	<beans:import resource="inbound.xml"/>
 
-	<beans:import resource="CommonChannelTests-outbound.xml"/>
+	<beans:import resource="outbound.xml"/>
 
 </beans:beans>
+
+
+
+
+<!-- 
+<groovy:script location="eda/bus/ExampleService.groovy" refresh-check-delay="10000"/>
+ -->
