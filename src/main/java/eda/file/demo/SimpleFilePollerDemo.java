@@ -22,8 +22,7 @@ public class SimpleFilePollerDemo {
 	public static void main(String... args) throws Exception {
 		File directory = new File(TMPDIR + File.separator + "/eda-with-spring");
 		FilePoller poller = new SimpleFilePoller(directory);
-		long count = 0;
-		while (count < 12) {
+		while (true) {
 			List<File> files = poller.poll();
 			if (!CollectionUtils.isEmpty(files)) {
 				for (File file : files) {
