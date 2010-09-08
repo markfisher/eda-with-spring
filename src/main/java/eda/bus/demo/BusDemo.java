@@ -1,4 +1,4 @@
-package eda.bus;
+package eda.bus.demo;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

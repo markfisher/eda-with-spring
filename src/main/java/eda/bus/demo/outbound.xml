@@ -15,7 +15,7 @@
 
 	<beans:bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate"
 		p:connectionFactory-ref="connectionFactory"
-		p:defaultDestinationName="queue.example.common"/>
+		p:defaultDestinationName="queue.demo.bus"/>
 
 	<beans:bean id="connectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory"
 		p:sessionCacheSize="10">

@@ -16,11 +16,11 @@
 
 	<!-- ########## JMS Messages ########## -->
 
-	<jms:message-driven-channel-adapter id="jmsIn" destination-name="queue.example.common" channel="messagesIn"/>
+	<jms:message-driven-channel-adapter id="jmsIn" destination-name="queue.demo.bus" channel="messagesIn"/>
 
 	<!-- ########## Files ########## -->
 
-	<file:inbound-channel-adapter id="filesIn" directory="${java.io.tmpdir}/eda-common-channel" channel="fileRoutingChannel"
+	<file:inbound-channel-adapter id="filesIn" directory="${java.io.tmpdir}/eda-bus" channel="fileRoutingChannel"
 		filename-pattern=".*\.(txt|xml)"/>
 
 	<router id="fileRouter" input-channel="fileRoutingChannel"
