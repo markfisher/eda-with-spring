@@ -24,10 +24,3 @@
 	<beans:import resource="outbound.xml"/>
 
 </beans:beans>
-
-
-
-
-<!-- 
-<groovy:script location="eda/bus/ExampleService.groovy" refresh-check-delay="10000"/>
- -->
