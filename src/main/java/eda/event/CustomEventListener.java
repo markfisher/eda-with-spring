@@ -5,12 +5,12 @@ import org.apache.commons.logging.LogFactory;
 
 import org.springframework.context.ApplicationListener;
 
-public class TestEventListener implements ApplicationListener<TestEvent> {
+public class CustomEventListener implements ApplicationListener<CustomEvent> {
 
 	private final Log logger = LogFactory.getLog(this.getClass());
 
 	@Override
-	public void onApplicationEvent(TestEvent event) {
+	public void onApplicationEvent(CustomEvent event) {
 		this.logger.info("received event: " + event);
 	}
 

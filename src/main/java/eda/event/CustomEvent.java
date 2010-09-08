@@ -3,9 +3,9 @@ package eda.event;
 import org.springframework.context.ApplicationEvent;
 
 @SuppressWarnings("serial")
-public class TestEvent extends ApplicationEvent {
+public class CustomEvent extends ApplicationEvent {
 
-	public TestEvent(String s) {
+	public CustomEvent(String s) {
 		super(s);
 	}
 
