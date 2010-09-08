@@ -1,4 +1,4 @@
-package eda.file;
+package eda.file.demo;
 
 import java.io.File;
 import java.io.FileReader;
@@ -6,19 +6,20 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Test;
 
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.FileCopyUtils;
 
-public class SimpleFilePollerTests {
+import eda.file.FilePoller;
+import eda.file.SimpleFilePoller;
+
+public class SimpleFilePollerDemo {
 
 	private static final String TMPDIR = System.getProperty("java.io.tmpdir");
 
-	private final Log logger = LogFactory.getLog(SimpleFilePollerTests.class);
+	private static final Log logger = LogFactory.getLog(SimpleFilePollerDemo.class);
 
-	@Test
-	public void pollForFiles() throws Exception {
+	public static void main(String... args) throws Exception {
 		File directory = new File(TMPDIR + File.separator + "/eda-with-spring");
 		FilePoller poller = new SimpleFilePoller(directory);
 		long count = 0;
