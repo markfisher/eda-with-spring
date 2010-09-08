@@ -1,17 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:batch="http://www.springframework.org/schema/batch"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+	xmlns:integration="http://www.springframework.org/schema/integration"
+	xmlns:file="http://www.springframework.org/schema/integration/file"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-2.0.xsd
+		http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file.xsd">
+
+	<context:property-placeholder/>
+
+	<file:inbound-channel-adapter directory="${java.io.tmpdir}/eda-batch" channel="files">
+		<integration:poller fixed-delay="1000"/>
+	</file:inbound-channel-adapter>
+
+	<integration:service-activator input-channel="files" ref="fileProcessor" output-channel="logger"/>
+
+	<integration:logging-channel-adapter id="logger" log-full-message="true"/>
 
 	<bean id="fileProcessor" class="eda.batch.FileProcessingJobLauncher">
 		<constructor-arg ref="job"/>
-		<constructor-arg ref="launcher"/>
-	</bean>
-
-	<bean id="launcher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
-		<property name="jobRepository" ref="jobRepository"/>
+		<constructor-arg>
+			<bean class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+				<property name="jobRepository" ref="jobRepository"/>
+			</bean>
+		</constructor-arg>
 	</bean>
 
 	<bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean">
@@ -34,18 +50,18 @@
 			<bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
 				<property name="lineTokenizer">
 					<bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
-						<property name="names" value="title, artist, album"/>
+						<property name="names" value="id, name, email"/>
 					</bean>
 				</property>
 				<property name="fieldSetMapper">
 					<bean class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
-						<property name="targetType" value="eda.batch.Song"/>
+						<property name="targetType" value="eda.batch.Customer"/>
 					</bean>					
 				</property>
 			</bean>
 		</property>
 	</bean>
 
-	<bean id="writer" class="eda.batch.SongLogger"/>
+	<bean id="writer" class="eda.batch.CustomerLogger"/>
 
 </beans>
