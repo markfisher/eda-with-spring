@@ -13,13 +13,17 @@
 
 	<context:property-placeholder/>
 
+	<!-- ##### Integration ##### -->
+
 	<file:inbound-channel-adapter directory="${java.io.tmpdir}/eda-batch" channel="files">
 		<integration:poller fixed-delay="1000"/>
 	</file:inbound-channel-adapter>
 
 	<integration:service-activator input-channel="files" ref="fileProcessor" output-channel="logger"/>
 
-	<integration:logging-channel-adapter id="logger" log-full-message="true"/>
+	<integration:logging-channel-adapter id="logger" expression="'exit status: ' + payload.exitStatus.exitCode" level="WARN"/>
+
+	<!-- ##### Batch ##### -->
 
 	<bean id="fileProcessor" class="eda.batch.FileProcessingJobLauncher">
 		<constructor-arg ref="job"/>
