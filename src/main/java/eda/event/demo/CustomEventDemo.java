@@ -10,7 +10,7 @@ public class CustomEventDemo {
 	public static void main(String... args) {
 		AbstractApplicationContext context = new ClassPathXmlApplicationContext("custom-context.xml", CustomEventDemo.class);
 		context.start();
-		context.publishEvent(new CustomEvent("foo"));
+		context.publishEvent(new CustomEvent("testEventSource"));
 		context.stop();
 	}
 

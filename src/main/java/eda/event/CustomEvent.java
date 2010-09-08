@@ -5,8 +5,8 @@ import org.springframework.context.ApplicationEvent;
 @SuppressWarnings("serial")
 public class CustomEvent extends ApplicationEvent {
 
-	public CustomEvent(String s) {
-		super(s);
+	public CustomEvent(Object source) {
+		super(source);
 	}
 
 }
