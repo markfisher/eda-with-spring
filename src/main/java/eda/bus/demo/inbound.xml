@@ -28,10 +28,7 @@
 
 	<file:file-to-string-transformer id="filesToString" input-channel="textFiles" output-channel="messagesIn"/>
 
-	<chain id="xmlFileTransformers" input-channel="xmlFiles" output-channel="messagesIn">
-		<file:file-to-string-transformer/>
-		<int-xml:xpath-transformer xpath-expression="/item/text()"/>
-	</chain>
+	<int-xml:xpath-transformer id="xmlFileTransformer" input-channel="xmlFiles" xpath-expression="/item/text()" output-channel="messagesIn"/>
 
 	<!-- ########## Mail ########## -->
 
