@@ -8,7 +8,9 @@
 		http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms-2.0.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<scheduled-producer cron="*/7 * * * * ?" channel="jmsOut" payload-expression="'Date/Time is ' + new java.util.Date()"/>
+	<inbound-channel-adapter channel="jmsOut" expression="'Date/Time is ' + new java.util.Date()">
+		<poller cron="*/7 * * * * ?"/>
+	</inbound-channel-adapter>
 
 	<jms:outbound-channel-adapter id="jmsOut" destination-name="queue.demo.bus"/>
 

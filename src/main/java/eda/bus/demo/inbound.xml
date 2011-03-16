@@ -21,7 +21,7 @@
 	<!-- ########## Files ########## -->
 
 	<file:inbound-channel-adapter id="filesIn" directory="${java.io.tmpdir}/eda-bus" channel="fileRoutingChannel"
-		filename-pattern=".*\.(txt|xml)"/>
+		filename-regex=".*\.(txt|xml)"/>
 
 	<router id="fileRouter" input-channel="fileRoutingChannel"
 			expression="payload.name.endsWith('txt') ? 'textFiles' : 'xmlFiles'"/>
@@ -32,7 +32,7 @@
 
 	<!-- ########## Mail ########## -->
 
-	<mail:inbound-channel-adapter id="mailIn" store-uri="pop3://mark:mark@localhost/INBOX"
+	<mail:inbound-channel-adapter id="mailIn" store-uri="pop3://demo:demo@localhost/INBOX"
 		channel="mailChannel" should-delete-messages="true"/>
 
 	<transformer input-channel="mailChannel"

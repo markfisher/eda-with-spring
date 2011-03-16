@@ -20,7 +20,6 @@
 	<context:property-placeholder/>
 
 	<beans:import resource="inbound.xml"/>
-
 	<beans:import resource="outbound.xml"/>
 
 </beans:beans>
